@@ -1,6 +1,6 @@
 rag:
   top_k: 5
-  min_similarity: 0.35
+  min_similarity: 0.2
   require_citation: true
 security:
   roles: [public, customer, agent, admin]

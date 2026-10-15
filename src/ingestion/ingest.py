@@ -28,7 +28,7 @@ def run():
                 expiry_date=meta.get("expiry_date"),
                 content_hash=h, source_path=str(f))
             validate(m)
-            registry[f.name] = {**meta, "content_hash": h}
+            registry[f.name] = {**meta, "content_hash": h, "body": body}
             seen.add(h)
             print(f"INGESTED: {f.name}")
         except Exception as e:
