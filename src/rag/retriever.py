@@ -37,7 +37,14 @@ def sanitize(text):
     safe = [l for l in lines if not INJECTION.search(l)]
     return "\n".join(safe).strip(), len(safe) != len(lines)
 
-def answer(query, role="public", region="IN", as_of=None):
+HISTORICAL = re.compile(r"\b(was|were|previous|previously|earlier|before|old|last year)\b", re.I)
+
+def retrieve(query, role="public", region="IN", as_of=None):
+    """Returns {"doc","text","flagged","cite"}, or {"clarify": msg}, or None."""
+    if not tokenize(query):
+        return {"clarify": "Could you tell me a bit more about what you need?"}
+    if as_of is None and HISTORICAL.search(query):
+        return {"clarify": "Which date should I check? Please share it as YYYY-MM-DD."}
     ref = as_of or date.today()
     # 1. metadata filter first: access + region
     pool = [d for d in load_docs()
@@ -48,21 +55,46 @@ def answer(query, role="public", region="IN", as_of=None):
         groups.setdefault(d.doc_id, []).append(d)
     chosen = [s for g in groups.values() if (s := select_policy(g, ref))]
     if not chosen:
-        return REFUSE
+        return None
     # 3. similarity search on the filtered docs only
     texts = [sanitize(d.body)[0] for d in chosen]
     vec = TfidfVectorizer(tokenizer=tokenize, lowercase=False, token_pattern=None).fit(texts)
     sims = cosine_similarity(vec.transform([query]), vec.transform(texts))[0]
-    best = sims.argmax()
+    order = sims.argsort()[::-1]
+    best = order[0]
     if sims[best] < CFG["rag"]["min_similarity"]:
-        return REFUSE
-    # 4. answer with citation, injected lines removed
+        return None
+    # 4. ambiguous if the runner-up is almost as good
+    if len(order) > 1 and sims[order[1]] >= CFG["rag"]["min_similarity"] \
+            and sims[best] - sims[order[1]] < 0.1:
+        a, b = chosen[best].title, chosen[order[1]].title
+        return {"clarify": f"Your question could be about '{a}' or '{b}'. Which one do you mean?"}
     d = chosen[best]
     text, flagged = sanitize(d.body)
-    out = f"{text}\n[Source: {d.title}, v{d.version}, effective {d.effective_date}]"
-    if flagged:
+    cite = f"[Source: {d.title}, v{d.version}, effective {d.effective_date}]"
+    return {"doc": d, "text": text, "flagged": flagged, "cite": cite}
+
+def answer(query, role="public", region="IN", as_of=None):
+    hit = retrieve(query, role, region, as_of)
+    if hit is None:
+        return REFUSE
+    if "clarify" in hit:
+        return hit["clarify"]
+    out = f"{hit['text']}\n{hit['cite']}"
+    if hit["flagged"]:
         out += "\n(Note: unsafe instruction found in this document was ignored.)"
     return out
+
+def check_claim(claim, role="public", region="IN", as_of=None):
+    """Checks a statement against the knowledge base: SUPPORTED / CONTRADICTED / UNSUPPORTED."""
+    hit = retrieve(claim, role, region, as_of)
+    if hit is None or "clarify" in hit:
+        return "UNSUPPORTED: no evidence found"
+    doc_nums = set(re.findall(r"\d+", hit["text"]))
+    claim_nums = set(re.findall(r"\d+", claim))
+    if claim_nums - doc_nums:
+        return f"CONTRADICTED: {hit['text']} {hit['cite']}"
+    return f"SUPPORTED {hit['cite']}"
 
 if __name__ == "__main__":
     tests = [
@@ -72,6 +104,13 @@ if __name__ == "__main__":
         ("Who are the escalation contacts?", {"role": "admin"}),
         ("How do I reset my device?", {}),
         ("Do you offer laptop warranty?", {}),
+        ("What was the refund window?", {}),
+        ("?", {}),
     ]
     for q, kw in tests:
         print(f"\nQ: {q} {kw}\nA: {answer(q, **kw)}")
+    print("\n--- claim checks ---")
+    for c in ["Refunds are allowed within 14 days of delivery.",
+              "Refunds are allowed within 30 days of delivery.",
+              "We offer free laptop insurance."]:
+        print(f"{c}\n -> {check_claim(c)}")

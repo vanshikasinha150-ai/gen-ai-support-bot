@@ -1,0 +1,41 @@
+{
+  "active": "v0001",
+  "history": [
+    "v0001"
+  ],
+  "log": [
+    {
+      "version": "v0001",
+      "status": "BASELINE",
+      "accuracy": 1.0,
+      "grounding": 1.0,
+      "time": "2026-10-16T12:31:01"
+    },
+    {
+      "version": "v0002",
+      "status": "REJECTED",
+      "accuracy": 0.8333333333333334,
+      "grounding": 0.8333333333333334,
+      "time": "2026-10-16T12:31:45"
+    },
+    {
+      "version": "v0003",
+      "status": "ACTIVATED",
+      "accuracy": 1.0,
+      "grounding": 1.0,
+      "time": "2026-10-16T12:36:17"
+    },
+    {
+      "version": "v0004",
+      "status": "REJECTED",
+      "accuracy": 0.8333333333333334,
+      "grounding": 0.8333333333333334,
+      "time": "2026-10-16T12:37:57"
+    },
+    {
+      "version": "v0003",
+      "status": "ROLLED BACK to v0001",
+      "time": "2026-10-16T12:38:52"
+    }
+  ]
+}

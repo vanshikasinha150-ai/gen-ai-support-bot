@@ -1,0 +1,8 @@
+[
+  {"q": "What is the refund window?", "as_of": "2026-10-16", "expect": "14 days", "source": "Refund Policy, v2.0"},
+  {"q": "What was the refund window?", "as_of": "2026-03-01", "expect": "7 days", "source": "Refund Policy, v1.0"},
+  {"q": "How do I reset my device?", "as_of": "2026-10-16", "expect": "power button", "source": "Setup Guide"},
+  {"q": "Who are the escalation contacts?", "as_of": "2026-10-16", "role": "admin", "expect": "admins only", "source": "Admin Escalation Playbook"},
+  {"q": "Who are the escalation contacts?", "as_of": "2026-10-16", "role": "public", "expect": "Sorry"},
+  {"q": "Do you offer laptop warranty?", "as_of": "2026-10-16", "expect": "Sorry"}
+]
