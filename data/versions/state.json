@@ -1,7 +1,8 @@
 {
-  "active": "v0001",
+  "active": "v0007",
   "history": [
-    "v0001"
+    "v0001",
+    "v0007"
   ],
   "log": [
     {
@@ -36,6 +37,25 @@
       "version": "v0003",
       "status": "ROLLED BACK to v0001",
       "time": "2026-10-16T12:38:52"
+    },
+    {
+      "version": "v0007",
+      "status": "ACTIVATED",
+      "accuracy": 1.0,
+      "grounding": 1.0,
+      "time": "2026-10-19T12:29:12"
+    },
+    {
+      "version": "v0008",
+      "status": "ACTIVATED",
+      "accuracy": 1.0,
+      "grounding": 1.0,
+      "time": "2026-10-19T12:29:48"
+    },
+    {
+      "version": "v0008",
+      "status": "ROLLED BACK to v0007",
+      "time": "2026-10-19T12:29:48"
     }
   ]
 }

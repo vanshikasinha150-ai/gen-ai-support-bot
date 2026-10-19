@@ -63,5 +63,18 @@
     "expiry_date": null,
     "content_hash": "d969125e9e8fa755c28db4e875f8ed91b8f4d245b82947136b6f92f570ffa157",
     "body": "Refunds are allowed within 30 days of delivery."
+  },
+  "shipping_faq.md": {
+    "doc_id": "shipping-faq",
+    "title": "Shipping FAQ",
+    "doc_type": "faq",
+    "version": "1.0",
+    "product": "all",
+    "region": "IN",
+    "access_level": "public",
+    "effective_date": "2026-01-01",
+    "expiry_date": null,
+    "content_hash": "985508d77040c4904df877b4cb385e48ca18168ed3177de3dffa7f97f1a54e05",
+    "body": "Standard shipping takes 5 working days."
   }
 }

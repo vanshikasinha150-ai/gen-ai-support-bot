@@ -9,3 +9,10 @@ session:
   inactivity_minutes: 30
   restore_window_hours: 24
   min_context_messages: 10
+pipeline:
+  update_time: "02:00"
+  maintenance_start: "01:00"
+  maintenance_end: "04:00"
+  retry_minutes: [15, 30, 60]
+  health_check_minutes: 5
+  health_min_accuracy: 0.8
