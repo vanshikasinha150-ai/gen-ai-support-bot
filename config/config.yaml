@@ -30,3 +30,7 @@ tickets:
   severity: {account: 5, payment: 4, defect: 3, delivery: 3, other: 1}
   weights: {severity: 0.4, sentiment: 0.2, waiting: 0.2, impact: 0.2}
   thresholds: {P1: 3.0, P2: 2.0, P3: 1.2}
+
+sentiment:
+  repeated_negative_count: 3
+  unresolved_minutes: 15

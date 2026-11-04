@@ -1,0 +1,46 @@
+[
+  {
+    "id": "E-0001",
+    "time": "2026-11-02 10:00",
+    "conversation_id": "c2",
+    "reason": "High-risk issue reported (duplicate payment)",
+    "condition": "high_risk:duplicate_payment",
+    "summary": "1 customer message(s), 1 negative. Trend: negative. Latest: Bahut bakwas service hai, mera paisa do baar kat gaya",
+    "routing": {
+      "queue": "agent"
+    }
+  },
+  {
+    "id": "E-0002",
+    "time": "2026-11-02 10:00",
+    "conversation_id": "c3",
+    "reason": "High-risk issue reported (account compromise)",
+    "condition": "high_risk:account_compromise",
+    "summary": "1 customer message(s), 0 negative. Trend: neutral. Latest: Hello, I noticed my account was accessed by someone else. Please check.",
+    "routing": {
+      "queue": "agent"
+    }
+  },
+  {
+    "id": "E-0003",
+    "time": "2026-11-02 10:04",
+    "conversation_id": "c4",
+    "reason": "3 negative messages in one conversation",
+    "condition": "repeated_negative",
+    "summary": "3 customer message(s), 3 negative. Trend: negative -> frustrated -> negative. Latest: This is unacceptable.",
+    "routing": {
+      "queue": "agent"
+    }
+  },
+  {
+    "id": "E-0004",
+    "time": "2026-11-02 10:16",
+    "conversation_id": "c8",
+    "reason": "Negative conversation unresolved for 16 minutes",
+    "condition": "negative_unresolved",
+    "summary": "1 customer message(s), 1 negative. Trend: negative. Latest: My earphones are broken, this is terrible.",
+    "routing": {
+      "queue": "agent"
+    }
+  }
+]

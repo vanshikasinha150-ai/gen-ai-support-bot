@@ -1,0 +1,126 @@
+{
+  "c1": {
+    "messages": [
+      {
+        "text": "Oh great, my order is late again. Wonderful service.",
+        "time": "2026-11-02 10:00",
+        "label": "sarcastic",
+        "confidence": 0.95
+      }
+    ],
+    "negative_since": null,
+    "resolved": true,
+    "escalated": []
+  },
+  "c2": {
+    "messages": [
+      {
+        "text": "Bahut bakwas service hai, mera paisa do baar kat gaya",
+        "time": "2026-11-02 10:00",
+        "label": "negative",
+        "confidence": 0.7
+      }
+    ],
+    "negative_since": null,
+    "resolved": true,
+    "escalated": [
+      "high_risk:duplicate_payment"
+    ]
+  },
+  "c3": {
+    "messages": [
+      {
+        "text": "Hello, I noticed my account was accessed by someone else. Please check.",
+        "time": "2026-11-02 10:00",
+        "label": "neutral",
+        "confidence": 0.6
+      }
+    ],
+    "negative_since": null,
+    "resolved": true,
+    "escalated": [
+      "high_risk:account_compromise"
+    ]
+  },
+  "c4": {
+    "messages": [
+      {
+        "text": "The product is bad.",
+        "time": "2026-11-02 10:00",
+        "label": "negative",
+        "confidence": 0.7
+      },
+      {
+        "text": "Support is useless, nobody helps.",
+        "time": "2026-11-02 10:02",
+        "label": "frustrated",
+        "confidence": 0.7
+      },
+      {
+        "text": "This is unacceptable.",
+        "time": "2026-11-02 10:04",
+        "label": "negative",
+        "confidence": 0.7
+      }
+    ],
+    "negative_since": null,
+    "resolved": true,
+    "escalated": [
+      "repeated_negative"
+    ]
+  },
+  "c5": {
+    "messages": [
+      {
+        "text": "Urgent! My package has not arrived, I need it asap.",
+        "time": "2026-11-07 22:00",
+        "label": "urgent",
+        "confidence": 0.95
+      }
+    ],
+    "negative_since": null,
+    "resolved": true,
+    "escalated": []
+  },
+  "c6": {
+    "messages": [
+      {
+        "text": "My delivery is late and I am disappointed.",
+        "time": "2026-11-07 22:30",
+        "label": "negative",
+        "confidence": 0.7
+      }
+    ],
+    "negative_since": null,
+    "resolved": true,
+    "escalated": []
+  },
+  "c7": {
+    "messages": [
+      {
+        "text": "Thank you so much, great help!",
+        "time": "2026-11-02 10:00",
+        "label": "positive",
+        "confidence": 0.9
+      }
+    ],
+    "negative_since": null,
+    "resolved": true,
+    "escalated": []
+  },
+  "c8": {
+    "messages": [
+      {
+        "text": "My earphones are broken, this is terrible.",
+        "time": "2026-11-02 10:00",
+        "label": "negative",
+        "confidence": 0.9
+      }
+    ],
+    "negative_since": "2026-11-02 10:00",
+    "resolved": false,
+    "escalated": [
+      "negative_unresolved"
+    ]
+  }
+}
