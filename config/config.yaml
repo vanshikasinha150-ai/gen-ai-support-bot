@@ -16,3 +16,17 @@ pipeline:
   retry_minutes: [15, 30, 60]
   health_check_minutes: 5
   health_min_accuracy: 0.8
+
+tickets:
+  mandatory: [customer, order_id, issue, contact]
+  products: [Smart Speaker, Wireless Earbuds, Air Purifier, Smart Watch]
+  sla_hours: {P1: 4, P2: 8, P3: 24, P4: 48}
+  warn_at: 0.75
+  weekend_days: [5, 6]
+  holidays: ["2026-11-10"]
+  business_hours: {start: "09:00", end: "18:00"}
+  duplicate_window_hours: 72
+  waiting_scale_hours: 20
+  severity: {account: 5, payment: 4, defect: 3, delivery: 3, other: 1}
+  weights: {severity: 0.4, sentiment: 0.2, waiting: 0.2, impact: 0.2}
+  thresholds: {P1: 3.0, P2: 2.0, P3: 1.2}

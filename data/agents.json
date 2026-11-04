@@ -1,0 +1,36 @@
+[
+  {
+    "name": "Asha",
+    "skills": [
+      "payment",
+      "account"
+    ],
+    "available": true,
+    "workload": 1,
+    "on_call": false
+  },
+  {
+    "name": "Ravi",
+    "skills": [
+      "delivery",
+      "defect",
+      "other"
+    ],
+    "available": true,
+    "workload": 2,
+    "on_call": false
+  },
+  {
+    "name": "Meera",
+    "skills": [
+      "payment",
+      "delivery",
+      "defect",
+      "account",
+      "other"
+    ],
+    "available": true,
+    "workload": 0,
+    "on_call": true
+  }
+]

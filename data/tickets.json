@@ -1,0 +1,182 @@
+[
+  {
+    "id": "T-0001",
+    "customer": "Asha Rao",
+    "order_id": "ORD-1001",
+    "product": "Smart Speaker",
+    "category": "payment",
+    "issue": "My name is Asha Rao. I was charged twice for order ORD-1001 (Rs 5,000) for my Smart Speaker. Screenshot attached. Please refund, this is una",
+    "evidence": [
+      "attached mentioned",
+      "screenshot mentioned"
+    ],
+    "contact": "asha.rao@example.com",
+    "priority": "P2",
+    "score": 2.8,
+    "parts": {
+      "severity": 4.0,
+      "sentiment": 2.0,
+      "waiting": 0.0,
+      "impact": 4.0
+    },
+    "created": "2026-11-02 10:00",
+    "group_id": "G-ORD-1001",
+    "status": "ESCALATED",
+    "duplicates": 1,
+    "events": [
+      "2026-11-02 11:00 duplicate request merged",
+      "2026-11-03 09:00 SLA breached: escalated to team lead"
+    ],
+    "routing": {
+      "queue": "agent",
+      "agent": "Meera"
+    },
+    "breached": true
+  },
+  {
+    "id": "T-0002",
+    "customer": "Ravi Kumar",
+    "order_id": "ORD-2002",
+    "product": null,
+    "category": "payment",
+    "issue": "My name is Ravi Kumar. For order ORD-2002 I was charged twice and the delivery is also delayed. Call me on +91 98765 43210",
+    "evidence": [],
+    "contact": "+91 98765 43210",
+    "priority": "P3",
+    "score": 1.8,
+    "parts": {
+      "severity": 4.0,
+      "sentiment": 0.0,
+      "waiting": 0.0,
+      "impact": 1.0
+    },
+    "created": "2026-11-02 12:00",
+    "group_id": "G-ORD-2002",
+    "status": "OPEN",
+    "duplicates": 0,
+    "events": [
+      "2026-11-03 09:00 SLA warning: 88% of time used"
+    ],
+    "routing": {
+      "queue": "agent",
+      "agent": "Asha"
+    },
+    "warned": true
+  },
+  {
+    "id": "T-0003",
+    "customer": "Ravi Kumar",
+    "order_id": "ORD-2002",
+    "product": null,
+    "category": "delivery",
+    "issue": "My name is Ravi Kumar. For order ORD-2002 I was charged twice and the delivery is also delayed. Call me on +91 98765 43210",
+    "evidence": [],
+    "contact": "+91 98765 43210",
+    "priority": "P3",
+    "score": 1.4,
+    "parts": {
+      "severity": 3.0,
+      "sentiment": 0.0,
+      "waiting": 0.0,
+      "impact": 1.0
+    },
+    "created": "2026-11-02 12:00",
+    "group_id": "G-ORD-2002",
+    "status": "OPEN",
+    "duplicates": 0,
+    "events": [
+      "2026-11-03 09:00 SLA warning: 88% of time used"
+    ],
+    "routing": {
+      "queue": "agent",
+      "agent": "Meera"
+    },
+    "warned": true
+  },
+  {
+    "id": "T-0004",
+    "customer": "Neha Singh",
+    "order_id": "ORD-3003",
+    "product": null,
+    "category": "account",
+    "issue": "My name is Neha Singh. My account was hacked, order ORD-3003 was placed without me. neha@example.com",
+    "evidence": [],
+    "contact": "neha@example.com",
+    "priority": "P1",
+    "score": 2.2,
+    "parts": {
+      "severity": 5.0,
+      "sentiment": 0.0,
+      "waiting": 0.0,
+      "impact": 1.0
+    },
+    "created": "2026-11-07 22:00",
+    "group_id": "G-ORD-3003",
+    "status": "OPEN",
+    "duplicates": 0,
+    "events": [],
+    "routing": {
+      "queue": "on-call",
+      "agent": "Meera"
+    }
+  },
+  {
+    "id": "T-0005",
+    "customer": "Karan Mehta",
+    "order_id": "ORD-4004",
+    "product": null,
+    "category": "delivery",
+    "issue": "My name is Karan Mehta. My order ORD-4004 delivery is late. karan@example.com",
+    "evidence": [],
+    "contact": "karan@example.com",
+    "priority": "P3",
+    "score": 1.4,
+    "parts": {
+      "severity": 3.0,
+      "sentiment": 0.0,
+      "waiting": 0.0,
+      "impact": 1.0
+    },
+    "created": "2026-11-07 22:30",
+    "group_id": "G-ORD-4004",
+    "status": "OPEN",
+    "duplicates": 0,
+    "events": [],
+    "routing": {
+      "queue": "scheduled",
+      "agent": null,
+      "scheduled_for": "2026-11-09 09:00"
+    }
+  },
+  {
+    "id": "T-0006",
+    "customer": "Dev Rao",
+    "order_id": "ORD-5005",
+    "product": null,
+    "category": "payment",
+    "issue": "My name is Dev Rao. Refund for order ORD-5005 is pending. dev@example.com",
+    "evidence": [],
+    "contact": "dev@example.com",
+    "priority": "P3",
+    "score": 1.8,
+    "parts": {
+      "severity": 4.0,
+      "sentiment": 0.0,
+      "waiting": 0.0,
+      "impact": 1.0
+    },
+    "created": "2026-11-09 10:00",
+    "group_id": "G-ORD-5005",
+    "status": "ESCALATED",
+    "duplicates": 0,
+    "events": [
+      "2026-11-09 10:00 escalated: no available agent with the required skill"
+    ],
+    "routing": {
+      "queue": "unassigned",
+      "agent": null,
+      "escalate": true,
+      "reason": "no available agent with the required skill"
+    }
+  }
+]
