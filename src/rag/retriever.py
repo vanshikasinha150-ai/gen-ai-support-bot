@@ -81,6 +81,7 @@ def sanitize(text):
     return "\n".join(safe).strip(), len(safe) != len(lines)
 
 
+
 def parse_reference_date(value):
     """Convert date strings and datetime values into date objects."""
 
@@ -95,10 +96,13 @@ def parse_reference_date(value):
 
     if isinstance(value, str):
         try:
-            return date.fromisoformat(value)
+            # Supports YYYY-MM-DD and datetime ISO formats.
+            return datetime.fromisoformat(
+                value.replace("Z", "+00:00")
+            ).date()
         except ValueError:
             raise ValueError(
-                "Invalid date. Use YYYY-MM-DD format."
+                "Invalid date. Use YYYY-MM-DD or ISO datetime format."
             )
 
     raise TypeError("Invalid reference date type.")
@@ -228,6 +232,35 @@ def retrieve(query, role="public", region="IN", as_of=None):
 
     chosen = [item[0] for item in valid]
     texts = [item[1] for item in valid]
+
+    # 6. Deduplicate identical evidence.
+    # Prefer policy documents over FAQs when their content is identical.
+    doc_priority = {
+        "policy": 3,
+        "faq": 2,
+        "guide": 1,
+        "product_doc": 0
+    }
+
+    unique_evidence = {}
+
+    for doc, text in valid:
+        normalized = " ".join(text.lower().split())
+
+        existing = unique_evidence.get(normalized)
+
+        if (
+            existing is None
+            or doc_priority.get(doc.doc_type, 0)
+            > doc_priority.get(existing[0].doc_type, 0)
+        ):
+            unique_evidence[normalized] = (doc, text)
+
+    valid = list(unique_evidence.values())
+
+    chosen = [item[0] for item in valid]
+    texts = [item[1] for item in valid]
+
 
     # 6. TF-IDF similarity search
     try:

@@ -34,3 +34,12 @@ tickets:
 sentiment:
   repeated_negative_count: 3
   unresolved_minutes: 15
+
+multimodal:
+  allowed_types: [png, jpg, jpeg, pdf]
+  max_mb: 5
+  retention_hours: 24
+  timeout_seconds: 30
+  min_ocr_confidence: 60
+  min_sharpness: 200
+  min_resolution: 200

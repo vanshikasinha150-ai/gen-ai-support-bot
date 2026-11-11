@@ -122,5 +122,72 @@
     "escalated": [
       "negative_unresolved"
     ]
+  },
+  "customer3": {
+    "messages": [
+      {
+        "text": "Please check this document.",
+        "time": "2026-11-10 10:00",
+        "label": "neutral",
+        "confidence": 0.6
+      },
+      {
+        "text": "Please check this document.",
+        "time": "2026-11-10 10:00",
+        "label": "neutral",
+        "confidence": 0.6
+      },
+      {
+        "text": "Please check this document.",
+        "time": "2026-11-10 10:00",
+        "label": "neutral",
+        "confidence": 0.6
+      },
+      {
+        "text": "Please check this document.",
+        "time": "2026-11-10 10:00",
+        "label": "neutral",
+        "confidence": 0.6
+      },
+      {
+        "text": "Please check this document.",
+        "time": "2026-11-10 10:00",
+        "label": "neutral",
+        "confidence": 0.6
+      },
+      {
+        "text": "Please check this document.",
+        "time": "2026-11-10 10:00",
+        "label": "neutral",
+        "confidence": 0.6
+      },
+      {
+        "text": "Please check this document.",
+        "time": "2026-11-10 10:00",
+        "label": "neutral",
+        "confidence": 0.6
+      },
+      {
+        "text": "Please check this document.",
+        "time": "2026-11-10 10:00",
+        "label": "neutral",
+        "confidence": 0.6
+      },
+      {
+        "text": "Please check this document.",
+        "time": "2026-11-10 10:00",
+        "label": "neutral",
+        "confidence": 0.6
+      },
+      {
+        "text": "Please check this document.",
+        "time": "2026-11-10 10:00",
+        "label": "neutral",
+        "confidence": 0.6
+      }
+    ],
+    "negative_since": null,
+    "resolved": false,
+    "escalated": []
   }
 }

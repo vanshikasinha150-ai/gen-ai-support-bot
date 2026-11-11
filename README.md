@@ -1,43 +1,113 @@
-# Gen AI Customer Service Bot
+﻿# Gen AI Customer Service Bot
 
-Internship extension of my training project (Real Time Gen AI Customer Service Bot).
-Tasks: knowledge-base update pipeline, multimodal analysis, ticketing, RAG assistant,
-sentiment and escalation, multilingual sessions.
+An AI-powered customer service support system developed as an internship extension project. The system combines Retrieval-Augmented Generation (RAG), multimodal document analysis, automated ticket management, sentiment analysis, escalation workflows, multilingual language processing, and an automated knowledge-base update pipeline.
 
-## Status
-| Task | Status |
+## Project Status
+
+| Module | Implementation Status |
 |---|---|
-| 4. RAG knowledge assistant | Done (core) |
-| 1. Knowledge-base update pipeline | In progress (versioning, quality gate, rollback done) |
-| 2, 3, 5, 6 | Planned |
+| Knowledge-Base Update Pipeline | Implemented |
+| Multimodal Document Analysis | Implemented |
+| Automated Ticket Management | Implemented |
+| RAG Knowledge Assistant | Implemented |
+| Sentiment Analysis and Escalation | Implemented |
+| Language Detection and Session Management | Implemented |
+| Translation Support | Implemented with an injectable translation engine |
+| Scheduling and Deployment | Implemented |
 
-## Project structure
-- `config/config.yaml`: thresholds, roles, session settings
-- `src/ingestion/`: metadata schema and ingestion (hashing, duplicate detection, quarantine)
-- `src/rag/`: policy selector, retriever, citations, injection sanitising
-- `src/pipeline/`: update pipeline (new/modified detection, versions, quality gate, rollback)
-- `data/raw/`: sample documents (conflicting, expired, future-dated, restricted, duplicate, injected)
-- `tests/`: automated tests and golden questions for the quality gate
+**Automated Testing:** 96 tests collected and passing successfully.
 
-## How to run
-```
-pip install pyyaml scikit-learn pytest
-python src/ingestion/ingest.py
-python src/rag/retriever.py
-python src/pipeline/update.py run
-python src/pipeline/update.py rollback
-python src/pipeline/update.py status
-python -m pytest tests -v
-```
+## Key Features
 
-## RAG behaviour
-- Metadata filter first (access level, region), then the policy active on the reference date
-- Future-dated and expired policies are ignored for current questions; historical dates supported
-- Every answer carries a source citation; the bot refuses or asks for clarification when evidence is missing
-- Prompt-injection lines inside documents are removed; unsupported claims are detected
+### 1. Knowledge-Base Update Pipeline
+- Detects new and modified documents.
+- Identifies duplicate documents.
+- Supports document versioning.
+- Validates updates through a quality gate.
+- Supports rollback to previous versions.
+- Evaluates retrieval accuracy and grounding before activating updates.
 
-## Update pipeline behaviour
-- Processes only new or modified documents; duplicates are skipped, invalid files quarantined
-- Every update is saved as a numbered version
-- A quality gate (accuracy and grounding on fixed questions) rejects updates that reduce quality
-- Rollback restores the previous version
+### 2. Multimodal Document Analysis
+- Processes invoice images and PDF documents.
+- Extracts relevant invoice information using OCR.
+- Detects mismatched values and missing information.
+- Validates file types, sizes, and image quality.
+- Detects hidden instructions in uploaded documents.
+- Protects sensitive information in logs and storage.
+- Supports background processing and configurable file retention.
+
+### 3. Automated Ticket Management
+- Extracts ticket information from customer conversations.
+- Detects duplicate issues.
+- Assigns ticket priorities.
+- Routes tickets to appropriate teams.
+- Handles after-hours requests.
+- Calculates SLA deadlines and warnings.
+- Supports escalation and secure agent handoffs.
+- Groups related issues while keeping unrelated orders separate.
+
+### 4. RAG Knowledge Assistant
+- Retrieves relevant knowledge-base documents.
+- Applies role-based access control and policy-date filtering.
+- Supports historical policy queries.
+- Provides source citations.
+- Detects unsupported claims.
+- Protects against prompt injection.
+- Requests clarification when historical information is ambiguous.
+
+### 5. Sentiment Analysis and Escalation
+- Supports six sentiment labels.
+- Uses conversation history for contextual analysis.
+- Handles sarcasm and multilingual inputs.
+- Detects high-risk customer conversations.
+- Escalates repeated or unresolved negative conversations.
+- Adjusts response tone based on sentiment without changing policy decisions.
+- Supports business-hours and after-hours routing.
+
+### 6. Language Processing and Session Management
+- Detects English, Hindi, Kannada, Tamil, Hinglish, and mixed-language inputs.
+- Handles empty and invalid messages.
+- Supports language switching.
+
+## Additional Modules
+
+### 7. Translation Support
+- Injectable translation engine.
+- Protected order IDs and custom terms.
+- Translation output validation.
+
+### 8. Monitoring
+- Monitors sentiment and ticket services.
+- Handles individual service failures.
+- Supports daemon execution.
+
+### 9. Scheduling and Deployment
+- Maintenance window validation.
+- Retry handling and health checks.
+- Rollback on deployment failure.
+
+### 10. Chatbot Integration
+- Coordinates the major application services.
+- Supports file attachments.
+- Handles service failures.
+
+## Installation
+
+Install dependencies using:
+
+`pip install -r requirements.txt`
+
+## Testing
+
+Run the test suite using:
+
+`python -m pytest -v`
+
+Check Python compilation using:
+
+`python -m compileall -q src tests`
+
+## Test Results
+
+- Automated tests: 96 passed.
+- Python compilation: Successful.

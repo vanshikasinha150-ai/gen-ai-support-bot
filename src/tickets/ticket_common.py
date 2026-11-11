@@ -9,10 +9,18 @@ def load_cfg():
     return yaml.safe_load(Path("config/config.yaml").read_text(encoding="utf-8-sig"))["tickets"]
 
 
+
 def parse_dt(value):
     if isinstance(value, datetime):
         return value
-    return datetime.strptime(value, "%Y-%m-%d %H:%M")
+
+    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M"):
+        try:
+            return datetime.strptime(value, fmt)
+        except ValueError:
+            continue
+
+    raise ValueError(f"Unsupported datetime format: {value}")
 
 
 def fmt(dt):
@@ -28,27 +36,44 @@ def _next_midnight(dt):
     return datetime.combine(dt.date() + timedelta(days=1), time.min)
 
 
+
 def working_hours_between(start, end, cfg):
-    """SLA clock: hours elapsed, counting only working days (weekends and holidays excluded)."""
-    total, cur = 0.0, start
+    """Count elapsed hours, excluding weekends and holidays."""
+    if end <= start:
+        return 0.0
+
+    total = 0.0
+    cur = start
+
     while cur < end:
         seg_end = min(end, _next_midnight(cur))
+
         if is_workday(cur.date(), cfg):
             total += (seg_end - cur).total_seconds() / 3600
+
         cur = seg_end
+
     return total
 
 
 def due_time(start, hours, cfg):
-    remaining, cur = float(hours), start
+    """Calculate SLA due time, excluding weekends and holidays."""
+    remaining = float(hours)
+    cur = start
+
     for _ in range(3650):
         day_end = _next_midnight(cur)
+
         if is_workday(cur.date(), cfg):
-            free = (day_end - cur).total_seconds() / 3600
-            if free >= remaining:
+            available = (day_end - cur).total_seconds() / 3600
+
+            if available >= remaining:
                 return cur + timedelta(hours=remaining)
-            remaining -= free
+
+            remaining -= available
+
         cur = day_end
+
     raise ValueError("no working days configured")
 
 

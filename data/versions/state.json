@@ -1,8 +1,9 @@
 {
-  "active": "v0007",
+  "active": "v0009",
   "history": [
     "v0001",
-    "v0007"
+    "v0007",
+    "v0009"
   ],
   "log": [
     {
@@ -56,6 +57,13 @@
       "version": "v0008",
       "status": "ROLLED BACK to v0007",
       "time": "2026-10-19T12:29:48"
+    },
+    {
+      "version": "v0009",
+      "status": "ACTIVATED",
+      "accuracy": 1.0,
+      "grounding": 1.0,
+      "time": "2026-11-10T16:14:28"
     }
   ]
 }

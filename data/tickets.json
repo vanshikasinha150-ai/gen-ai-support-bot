@@ -25,7 +25,7 @@
     "duplicates": 1,
     "events": [
       "2026-11-02 11:00 duplicate request merged",
-      "2026-11-03 09:00 SLA breached: escalated to team lead"
+      "2026-11-09 12:00 SLA breached: escalated to team lead"
     ],
     "routing": {
       "queue": "agent",
@@ -52,16 +52,16 @@
     },
     "created": "2026-11-02 12:00",
     "group_id": "G-ORD-2002",
-    "status": "OPEN",
+    "status": "ESCALATED",
     "duplicates": 0,
     "events": [
-      "2026-11-03 09:00 SLA warning: 88% of time used"
+      "2026-11-09 12:00 SLA breached: escalated to team lead"
     ],
     "routing": {
       "queue": "agent",
       "agent": "Asha"
     },
-    "warned": true
+    "breached": true
   },
   {
     "id": "T-0003",
@@ -82,16 +82,16 @@
     },
     "created": "2026-11-02 12:00",
     "group_id": "G-ORD-2002",
-    "status": "OPEN",
+    "status": "ESCALATED",
     "duplicates": 0,
     "events": [
-      "2026-11-03 09:00 SLA warning: 88% of time used"
+      "2026-11-09 12:00 SLA breached: escalated to team lead"
     ],
     "routing": {
       "queue": "agent",
       "agent": "Meera"
     },
-    "warned": true
+    "breached": true
   },
   {
     "id": "T-0004",
@@ -112,13 +112,16 @@
     },
     "created": "2026-11-07 22:00",
     "group_id": "G-ORD-3003",
-    "status": "OPEN",
+    "status": "ESCALATED",
     "duplicates": 0,
-    "events": [],
+    "events": [
+      "2026-11-09 12:00 SLA breached: escalated to team lead"
+    ],
     "routing": {
       "queue": "on-call",
       "agent": "Meera"
-    }
+    },
+    "breached": true
   },
   {
     "id": "T-0005",
@@ -139,14 +142,17 @@
     },
     "created": "2026-11-07 22:30",
     "group_id": "G-ORD-4004",
-    "status": "OPEN",
+    "status": "ESCALATED",
     "duplicates": 0,
-    "events": [],
+    "events": [
+      "2026-11-10 10:00 SLA breached: escalated to team lead"
+    ],
     "routing": {
       "queue": "scheduled",
       "agent": null,
       "scheduled_for": "2026-11-09 09:00"
-    }
+    },
+    "breached": true
   },
   {
     "id": "T-0006",
