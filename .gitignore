@@ -5,3 +5,5 @@ __pycache__/
 venv/
 .env
 .env.*
+data/quarantine/
+data/registry_backup.json
