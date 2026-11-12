@@ -1,10 +1,14 @@
 ﻿# Gen AI Customer Service Bot
 
-An AI-powered customer service support system developed as an internship extension project. The system combines Retrieval-Augmented Generation (RAG), multimodal document analysis, automated ticket management, sentiment analysis, escalation workflows, multilingual language processing, and an automated knowledge-base update pipeline.
+An AI-powered customer service support system developed as an internship extension project. It combines Retrieval-Augmented Generation (RAG), multimodal document analysis, automated ticket management, sentiment analysis, escalation workflows, multilingual language processing, and an automated knowledge-base update pipeline.
+
+## Project Overview
+
+The system is designed to improve customer support by automating common support operations, retrieving relevant knowledge-base information, analyzing customer sentiment, processing documents, and managing support tickets.
 
 ## Project Status
 
-| Module | Implementation Status |
+| Module | Status |
 |---|---|
 | Knowledge-Base Update Pipeline | Implemented |
 | Multimodal Document Analysis | Implemented |
@@ -12,10 +16,12 @@ An AI-powered customer service support system developed as an internship extensi
 | RAG Knowledge Assistant | Implemented |
 | Sentiment Analysis and Escalation | Implemented |
 | Language Detection and Session Management | Implemented |
-| Translation Support | Implemented with an injectable translation engine |
+| Translation Support | Implemented |
+| Monitoring | Implemented |
 | Scheduling and Deployment | Implemented |
+| Chatbot Integration | Implemented |
 
-**Automated Testing:** 96 tests collected and passing successfully.
+**Automated Testing:** 96 tests passed successfully.
 
 ## Key Features
 
@@ -23,13 +29,13 @@ An AI-powered customer service support system developed as an internship extensi
 - Detects new and modified documents.
 - Identifies duplicate documents.
 - Supports document versioning.
-- Validates updates through a quality gate.
+- Validates updates using a quality gate.
 - Supports rollback to previous versions.
 - Evaluates retrieval accuracy and grounding before activating updates.
 
 ### 2. Multimodal Document Analysis
 - Processes invoice images and PDF documents.
-- Extracts relevant invoice information using OCR.
+- Extracts information using OCR.
 - Detects mismatched values and missing information.
 - Validates file types, sizes, and image quality.
 - Detects hidden instructions in uploaded documents.
@@ -37,44 +43,42 @@ An AI-powered customer service support system developed as an internship extensi
 - Supports background processing and configurable file retention.
 
 ### 3. Automated Ticket Management
-- Extracts ticket information from customer conversations.
+- Extracts ticket information from conversations.
 - Detects duplicate issues.
 - Assigns ticket priorities.
 - Routes tickets to appropriate teams.
 - Handles after-hours requests.
 - Calculates SLA deadlines and warnings.
-- Supports escalation and secure agent handoffs.
-- Groups related issues while keeping unrelated orders separate.
+- Supports escalation and agent handoffs.
 
 ### 4. RAG Knowledge Assistant
 - Retrieves relevant knowledge-base documents.
-- Applies role-based access control and policy-date filtering.
+- Supports role-based access control.
+- Applies policy-date filtering.
 - Supports historical policy queries.
 - Provides source citations.
 - Detects unsupported claims.
 - Protects against prompt injection.
-- Requests clarification when historical information is ambiguous.
 
 ### 5. Sentiment Analysis and Escalation
 - Supports six sentiment labels.
-- Uses conversation history for contextual analysis.
+- Analyzes conversation history.
 - Handles sarcasm and multilingual inputs.
-- Detects high-risk customer conversations.
+- Detects high-risk conversations.
 - Escalates repeated or unresolved negative conversations.
-- Adjusts response tone based on sentiment without changing policy decisions.
-- Supports business-hours and after-hours routing.
+- Adjusts response tone based on customer sentiment.
 
 ### 6. Language Processing and Session Management
 - Detects English, Hindi, Kannada, Tamil, Hinglish, and mixed-language inputs.
-- Handles empty and invalid messages.
 - Supports language switching.
-
-## Additional Modules
+- Manages customer sessions.
+- Handles inactivity timeouts and session restoration.
+- Maintains limited conversation history.
 
 ### 7. Translation Support
-- Injectable translation engine.
-- Protected order IDs and custom terms.
-- Translation output validation.
+- Uses an injectable translation engine.
+- Protects order IDs and custom terms.
+- Validates translation output.
 
 ### 8. Monitoring
 - Monitors sentiment and ticket services.
@@ -82,32 +86,156 @@ An AI-powered customer service support system developed as an internship extensi
 - Supports daemon execution.
 
 ### 9. Scheduling and Deployment
-- Maintenance window validation.
-- Retry handling and health checks.
-- Rollback on deployment failure.
+- Validates maintenance windows.
+- Supports retry handling and health checks.
+- Supports rollback on deployment failure.
 
 ### 10. Chatbot Integration
 - Coordinates the major application services.
 - Supports file attachments.
 - Handles service failures.
 
-## Installation
+## Technology Stack
 
-Install dependencies using:
+**Programming Language**
+- Python
 
-`pip install -r requirements.txt`
+**Libraries and Dependencies**
+- PyYAML – Configuration management
+- Schema – Data validation
+- Scikit-learn – Machine learning functionality
+- Pillow – Image processing
+- Pytest – Automated testing
 
-## Testing
+**Other Technologies**
+- Retrieval-Augmented Generation (RAG)
+- Optical Character Recognition (OCR)
+- Natural Language Processing (NLP)
+- JSON-based data storage
+- YAML configuration
 
-Run the test suite using:
+## Project Structure
 
-`python -m pytest -v`
+```text
+gen-ai-support-bot/
+│
+├── config/
+│   └── config.yaml
+│
+├── data/
+│   ├── conversations.json
+│   └── sessions/
+│
+├── reports/
+├── report_ss/
+│
+├── src/
+│   ├── chatbot.py
+│   ├── ingestion/
+│   ├── language/
+│   ├── monitoring/
+│   ├── multimodal/
+│   ├── pipeline/
+│   ├── rag/
+│   ├── security/
+│   ├── sentiment/
+│   └── tickets/
+│
+├── tests/
+│
+├── requirements.txt
+├── README.md
+└── .gitignore
+```
 
-Check Python compilation using:
+## Installation and Setup
 
-`python -m compileall -q src tests`
+### 1. Clone the repository
+
+```bash
+git clone YOUR_GITHUB_REPOSITORY_URL
+```
+
+### 2. Navigate to the project directory
+
+```bash
+cd gen-ai-support-bot
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Check configuration
+
+Review the configuration file:
+
+```text
+config/config.yaml
+```
+
+Update the settings according to your environment.
+
+## Running the Chatbot
+
+Run a sample chatbot interaction using:
+
+```bash
+python -c "from src.chatbot import CustomerServiceBot; bot=CustomerServiceBot(); print(bot.process_message('demo-001','How long does shipping take?'))"
+```
+
+This initializes the customer service bot and processes a sample customer query.
+
+## Running Tests
+
+Run all automated tests:
+
+```bash
+python -m pytest -q
+```
+
+Run tests with detailed output:
+
+```bash
+python -m pytest -v
+```
+
+Check Python compilation:
+
+```bash
+python -m compileall -q src tests
+```
 
 ## Test Results
 
-- Automated tests: 96 passed.
-- Python compilation: Successful.
+| Test Metric | Result |
+|---|---|
+| Total Tests | 96 |
+| Passed | 96 |
+| Failed | 0 |
+| Success Rate | 100% |
+
+All 96 automated tests passed successfully.
+
+## Future Scope
+
+- Integration with live customer support platforms.
+- Improved multilingual translation capabilities.
+- Advanced conversational analytics.
+- Integration with external ticketing systems.
+- Enhanced knowledge-base automation.
+- Deployment through a cloud-based environment.
+
+## Conclusion
+
+The Gen AI Customer Service Bot demonstrates the integration of AI-driven customer support capabilities, including document intelligence, knowledge retrieval, sentiment analysis, multilingual processing, and automated ticket management.
+
+The project aims to improve support efficiency, enhance customer experience, and reduce repetitive manual support operations.
+
+---
+
+**Project:** Gen AI Customer Service Bot
+**Category:** Artificial Intelligence / Generative AI
+**Purpose:** Internship Extension Project
