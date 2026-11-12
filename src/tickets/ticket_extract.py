@@ -7,14 +7,50 @@ PHONE = re.compile(r"(?<!\d)(?:\+?91[\s-]?)?[6-9]\d{4}[\s-]?\d{5}(?!\d)")
 NAME = re.compile(r"(?i:my name is|i am|i'm|this is)\s+([A-Z][a-z]+(?:\s[A-Z][a-z]+)?)")
 EVIDENCE = re.compile(r"(?i)\b(screenshot|photo|picture|invoice|receipt|video|attached|attachment)\b")
 
+
 KEYWORDS = {
-    "account": [r"hack", r"compromis", r"unauthori[sz]ed", r"fraud", r"account (?:is )?locked",
-                r"can't log ?in", r"cannot log ?in"],
-    "payment": [r"charged twice", r"double charg", r"duplicate payment", r"refund", r"payment",
-                r"money (?:was )?deducted", r"charged"],
-    "delivery": [r"not (?:been )?delivered", r"\blate\b", r"delay", r"shipping", r"tracking",
-                 r"courier", r"hasn'?t arrived"],
-    "defect": [r"broken", r"damaged", r"defective", r"not working", r"stopped working", r"faulty"],
+    "account": [
+        r"hack",
+        r"compromis",
+        r"unauthori[sz]ed",
+        r"fraud",
+        r"account (?:is )?locked",
+        r"can't log ?in",
+        r"cannot log ?in"
+    ],
+
+    "payment": [
+        r"charged twice",
+        r"double charg",
+        r"duplicate payment",
+        r"refund",
+        r"payment",
+        r"money (?:was )?deducted",
+        r"charged"
+    ],
+
+    "delivery": [
+        r"not (?:been )?delivered",
+        r"\bnot arrived\b",
+        r"\bhas not arrived\b",
+        r"\bhasn't arrived\b",
+        r"\bhaven't arrived\b",
+        r"\bhas not been received\b",
+        r"\blate\b",
+        r"delay",
+        r"shipping",
+        r"tracking",
+        r"courier"
+    ],
+
+    "defect": [
+        r"broken",
+        r"damaged",
+        r"defective",
+        r"not working",
+        r"stopped working",
+        r"faulty"
+    ]
 }
 
 ASK = {

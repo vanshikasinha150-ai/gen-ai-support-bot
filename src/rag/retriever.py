@@ -68,6 +68,27 @@ def tokenize(text):
     return normalized
 
 
+def expand_query(query):
+    """Expand common customer phrases into FAQ search terms."""
+
+    expanded = query.lower()
+
+    if re.search(
+        r"\b(arriv\w*|deliver\w*|shipment|shipping|ship|courier|tracking|track|late|delay\w*)\b",
+        expanded
+    ):
+        expanded += " shipping delivery tracking courier arrived delayed shipment"
+
+    if re.search(r"\b(return|returns|pickup|exchange)\b", expanded):
+        expanded += " returns return pickup exchange"
+
+    if re.search(r"\b(refund|refunds|reimburse\w*|money back)\b", expanded):
+        expanded += " refund refunds reimbursement money back"
+
+    return expanded
+
+
+
 def sanitize(text):
     """Remove unsafe instruction lines."""
 
@@ -156,6 +177,7 @@ def load_docs():
     return docs
 
 
+
 def retrieve(query, role="public", region="IN", as_of=None):
     """Retrieve the most relevant active policy document."""
 
@@ -175,18 +197,19 @@ def retrieve(query, role="public", region="IN", as_of=None):
             )
         }
 
-    try:
-        ref = parse_reference_date(as_of)
-    except (ValueError, TypeError) as exc:
-        return {"clarify": str(exc)}
-
     # 1. Load documents
     docs = load_docs()
 
     if not docs:
         return None
 
-    # 2. Apply access and region filters
+    # 2. Resolve reference date
+    try:
+        ref = parse_reference_date(as_of)
+    except (ValueError, TypeError):
+        return None
+
+    # 3. Apply access and region filters
     pool = [
         d for d in docs
         if getattr(d, "access_level", None) in RANK
@@ -197,13 +220,13 @@ def retrieve(query, role="public", region="IN", as_of=None):
     if not pool:
         return None
 
-    # 3. Group documents by document family
+    # 4. Group documents by document family
     groups = {}
 
     for doc in pool:
         groups.setdefault(doc.doc_id, []).append(doc)
 
-    # 4. Select policy active on reference date
+    # 5. Select policy active on reference date
     chosen = []
 
     for group in groups.values():
@@ -215,26 +238,19 @@ def retrieve(query, role="public", region="IN", as_of=None):
     if not chosen:
         return None
 
-    # 5. Sanitize documents
-    texts = [
-        sanitize(d.body)[0]
-        for d in chosen
-    ]
+    # 6. Sanitize documents
+    valid = []
 
-    valid = [
-        (doc, text)
-        for doc, text in zip(chosen, texts)
-        if text and tokenize(text)
-    ]
+    for doc in chosen:
+        clean_text, _ = sanitize(doc.body)
+
+        if clean_text and tokenize(clean_text):
+            valid.append((doc, clean_text))
 
     if not valid:
         return None
 
-    chosen = [item[0] for item in valid]
-    texts = [item[1] for item in valid]
-
-    # 6. Deduplicate identical evidence.
-    # Prefer policy documents over FAQs when their content is identical.
+    # 7. Deduplicate identical evidence
     doc_priority = {
         "policy": 3,
         "faq": 2,
@@ -246,7 +262,6 @@ def retrieve(query, role="public", region="IN", as_of=None):
 
     for doc, text in valid:
         normalized = " ".join(text.lower().split())
-
         existing = unique_evidence.get(normalized)
 
         if (
@@ -261,18 +276,23 @@ def retrieve(query, role="public", region="IN", as_of=None):
     chosen = [item[0] for item in valid]
     texts = [item[1] for item in valid]
 
-
-    # 6. TF-IDF similarity search
+    # 8. TF-IDF similarity search using title and body
     try:
+        search_texts = [
+            f"{doc.title} {doc.doc_type} {text}"
+            for doc, text in valid
+        ]
+
         vectorizer = TfidfVectorizer(
             tokenizer=tokenize,
             lowercase=False,
             token_pattern=None
         )
 
-        document_vectors = vectorizer.fit_transform(texts)
+        document_vectors = vectorizer.fit_transform(search_texts)
 
-        query_vector = vectorizer.transform([query])
+        expanded_query = expand_query(query)
+        query_vector = vectorizer.transform([expanded_query])
 
         similarities = cosine_similarity(
             query_vector,
@@ -282,20 +302,19 @@ def retrieve(query, role="public", region="IN", as_of=None):
     except ValueError:
         return None
 
-    # 7. Rank documents
+    # 9. Rank documents
     order = similarities.argsort()[::-1]
 
     if len(order) == 0:
         return None
 
     best = order[0]
-
     minimum = CFG["rag"]["min_similarity"]
 
     if similarities[best] < minimum:
         return None
 
-    # 8. Handle ambiguous results
+    # 10. Handle ambiguous results
     if len(order) > 1:
         second = order[1]
 
@@ -313,7 +332,7 @@ def retrieve(query, role="public", region="IN", as_of=None):
                 )
             }
 
-    # 9. Return selected document
+    # 11. Return selected document
     doc = chosen[best]
 
     clean_text, flagged = sanitize(doc.body)
