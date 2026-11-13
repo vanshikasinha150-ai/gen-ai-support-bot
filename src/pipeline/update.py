@@ -6,6 +6,8 @@ sys.path.insert(0, "src/ingestion")
 sys.path.insert(0, "src/rag")
 import ingest, retriever
 from schema import DocMetadata, validate
+sys.path.insert(0, "src/security")
+import kb_security, kb_monitor
 
 RAW, QUAR = Path("data/raw"), Path("data/quarantine")
 LIVE = Path("data/registry.json")          # the registry the chatbot reads
@@ -42,6 +44,8 @@ def build_candidate(live):
             if h in hashes and hashes[h] != f.name:
                 print(f"DUPLICATE skipped: {f.name}")
                 continue
+            if kb_security.scan(body):
+                raise ValueError("prompt injection detected")
             m = DocMetadata(
                 doc_id=meta["doc_id"], title=meta["title"], doc_type=meta["doc_type"],
                 version=str(meta["version"]), product=meta["product"], region=meta["region"],
@@ -56,6 +60,8 @@ def build_candidate(live):
             QUAR.mkdir(exist_ok=True)
             shutil.move(str(f), QUAR / f.name)
             print(f"QUARANTINED: {f.name} ({e})")
+            kb_security.audit("QUARANTINED", file=f.name, reason=str(e))
+            kb_monitor.record("quarantine", file=f.name)
     return cand, changes
 
 
@@ -143,6 +149,7 @@ def rollback():
                          "time": datetime.now().isoformat(timespec="seconds")})
     save_state(state)
     print(f"Rolled back {bad} -> {prev}")
+    kb_monitor.record("rollback", frm=bad, to=prev)
 
 
 def status():
@@ -154,5 +161,16 @@ def status():
 
 
 if __name__ == "__main__":
-    cmd = sys.argv[1] if len(sys.argv) > 1 else "run"
-    {"run": run_update, "rollback": rollback, "status": status}[cmd]()
+    args = sys.argv[1:]
+    user = "guest"
+    if "--user" in args:
+        i = args.index("--user")
+        user = args[i + 1]
+        del args[i:i + 2]
+    cmd = args[0] if args else "status"
+    actions = {"run": run_update, "rollback": rollback, "status": status}
+    try:
+        kb_security.authorize(user, cmd)
+        actions[cmd]()
+    except PermissionError as e:
+        print(f"ACCESS DENIED: {e}")

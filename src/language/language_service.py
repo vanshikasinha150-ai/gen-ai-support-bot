@@ -76,6 +76,11 @@ def detect_language(text: str) -> dict:
     }
 
 
+NAME_RX = re.compile(
+    r"(?i:my name is|i am|i'm|this is|mera naam|me llamo|je m'appelle)\s+([A-Z][^\s.,!?]*)"
+)
+
+
 def translate_text(
     text: str,
     source: str,
@@ -106,14 +111,13 @@ def translate_text(
         raise RuntimeError("Translation engine is not configured")
 
     protected = re.compile(
-        r"\b(?:ORD[-_]?\d+|[A-Z]{2,5}\d{3,}|"
-        r"\d{1,4}[/-]\d{1,2}[/-]\d{2,4}|"
-        r"₹\s?[\d,]+(?:\.\d{1,2})?|"
-        r"\$\s?[\d,]+(?:\.\d{1,2})?)\b"
+        r"(?<![\w-])(?:ORD[-_]?\d+|[A-Z]{2,5}-?\d{2,}|E-?\d{3,5}|"
+        r"\d{4}-\d{2}-\d{2}|\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|"
+        r"(?:\u20b9|Rs\.?|INR|\$)\s?[\d,]+(?:\.\d{1,2})?)(?![\w-])"
     )
 
     values = []
-    terms = list(protected_terms)
+    terms = list(protected_terms) + NAME_RX.findall(text)
 
     def save(match):
         token = f"ZXQPROTECT{len(values)}QXZ"

@@ -1,0 +1,4 @@
+{"time": "2026-11-13T11:28:58", "event": "DENIED", "user": "guest", "action": "run"}
+{"time": "2026-11-13T11:29:01", "event": "DENIED", "user": "ops_user", "action": "rollback"}
+{"time": "2026-11-13T11:29:05", "event": "DENIED", "user": "hacker", "action": "status"}
+{"time": "2026-11-13T11:29:07", "event": "ALLOWED", "user": "admin_user", "action": "status"}

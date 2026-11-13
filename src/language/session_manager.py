@@ -210,9 +210,9 @@ class SessionManager:
     def _now(self):
         return self.clock()
 
-    def _archive(self, customer_id, session):
+    def _archive(self, customer_id, session, archived_at=None):
         session["active"] = False
-        session["archived_at"] = self._now()
+        session["archived_at"] = archived_at or self._now()
         self.archives[customer_id] = session
 
     def _cleanup_customer_archive(self, customer_id):
@@ -281,7 +281,7 @@ class SessionManager:
 
         if self._now() - last_activity >= timedelta(minutes=inactivity):
             self.active_sessions.pop(customer_id, None)
-            self._archive(customer_id, session)
+            self._archive(customer_id, session, last_activity)
             return None
 
         return session

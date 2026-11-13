@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -29,6 +29,8 @@ import ticket_service
 import ticket_extract
 import retriever
 import mm_service
+import time as _time
+import kb_monitor
 
 
 class CustomerServiceBot:
@@ -80,6 +82,7 @@ class CustomerServiceBot:
                 raise ValueError("Message or file attachment is required")
 
         timestamp = self._timestamp(now)
+        _started = _time.perf_counter()
 
         session = self.sessions.get_session(customer_id)
         if session is None:
@@ -232,6 +235,15 @@ class CustomerServiceBot:
 
         self.sessions.add_message(
             customer_id, "assistant", response_text
+        )
+
+        kb_monitor.record(
+            "request",
+            latency_ms=round((_time.perf_counter() - _started) * 1000, 2),
+            confidence=(sentiment or {}).get("confidence"),
+            escalated=bool((sentiment or {}).get("escalation")),
+            failures=len(errors),
+            language=str(language_info.get("language")),
         )
 
         return {

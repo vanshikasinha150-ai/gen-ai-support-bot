@@ -4,6 +4,8 @@ from pathlib import Path
 import yaml
 
 import update
+sys.path.insert(0, "src/security")
+import kb_security, kb_monitor
 
 CFG = yaml.safe_load(Path("config/config.yaml").read_text())["pipeline"]
 
@@ -40,6 +42,7 @@ def health_watch(scale):
         print(f"Health check {minute}/{total} min")
         if not healthy():
             print("Health check failed: rolling back automatically")
+            kb_monitor.record("health_failure")
             update.rollback()
             return False
         time.sleep(60 * scale)
@@ -66,6 +69,7 @@ def run_scheduled(now, scale, fail_times=0, break_live=False):
             break
         except Exception as e:
             print(f"Attempt {attempts} failed: {e}")
+            kb_monitor.record("update_failure", reason=str(e)[:80])
     else:
         print("All retries failed. Alert: manual check needed.")
         return
@@ -94,7 +98,13 @@ if __name__ == "__main__":
     p.add_argument("--fast", action="store_true", help="shrink waits for testing")
     p.add_argument("--fail", type=int, default=0, help="simulate N failed attempts")
     p.add_argument("--break-live", action="store_true", help="simulate a bad deployment")
+    p.add_argument("--user", default="scheduler", help="who is running this")
     a = p.parse_args()
+    try:
+        kb_security.authorize(a.user, "run")
+    except PermissionError as e:
+        print(f"ACCESS DENIED: {e}")
+        raise SystemExit(1)
     scale = 0.01 if a.fast else 1
     if a.command == "daemon":
         daemon(scale)

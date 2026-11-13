@@ -1,0 +1,10 @@
+{"time": "2026-11-13T11:29:08", "kind": "request", "latency_ms": 0.12, "confidence": null, "escalated": false, "failures": 0, "language": "en"}
+{"time": "2026-11-13T11:29:08", "kind": "request", "latency_ms": 0.1, "confidence": null, "escalated": false, "failures": 0, "language": "en"}
+{"time": "2026-11-13T11:29:08", "kind": "request", "latency_ms": 50.96, "confidence": 0.6, "escalated": false, "failures": 0, "language": "en"}
+{"time": "2026-11-13T11:29:08", "kind": "request", "latency_ms": 0.07, "confidence": null, "escalated": false, "failures": 1, "language": "en"}
+{"time": "2026-11-13T11:29:11", "kind": "update_failure", "reason": "simulated update failure"}
+{"time": "2026-11-13T11:29:11", "kind": "update_failure", "reason": "simulated update failure"}
+{"time": "2026-11-13T11:29:11", "kind": "update_failure", "reason": "simulated update failure"}
+{"time": "2026-11-13T11:29:11", "kind": "update_failure", "reason": "simulated update failure"}
+{"time": "2026-11-13T11:29:11", "kind": "update_failure", "reason": "simulated update failure"}
+{"time": "2026-11-13T11:29:11", "kind": "health_failure"}

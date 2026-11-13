@@ -43,3 +43,14 @@ multimodal:
   min_ocr_confidence: 60
   min_sharpness: 200
   min_resolution: 200
+
+access:
+  roles:
+    viewer: [status]
+    operator: [status, run]
+    admin: [status, run, rollback]
+  users:
+    guest: viewer
+    ops_user: operator
+    admin_user: admin
+    scheduler: admin
