@@ -239,3 +239,9 @@ The project aims to improve support efficiency, enhance customer experience, and
 **Project:** Gen AI Customer Service Bot
 **Category:** Artificial Intelligence / Generative AI
 **Purpose:** Internship Extension Project
+
+## Limitations
+- Sentiment analysis and language detection are rule-based (lexicons and regex), not trained ML models.
+- Image OCR needs the Tesseract program installed; without it the bot reports that it cannot read the file, and tests use a fake OCR engine.
+- Translation needs a translation engine to be plugged in (tests use a mock engine).
+- Customer sessions are kept in memory, so they do not survive a restart.
